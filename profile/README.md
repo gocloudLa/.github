@@ -1,4 +1,4 @@
-# GoCloudLa · DevOps & Cloud Engineering Experts ☁️
+# GoCloud · DevOps & Cloud Engineering Experts ☁️
 
 [![Website](https://img.shields.io/badge/www.gocloud.la-%2312100E.svg?style=for-the-badge&logo=AmazonAWS&logoColor=white)](https://www.gocloud.la)
 [![AWS Partner](https://img.shields.io/badge/AWS%20Partner-Advanced-orange?style=for-the-badge&logo=amazonaws&logoColor=white)](https://aws.amazon.com/partners/find/)
