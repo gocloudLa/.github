@@ -1,0 +1,77 @@
+name: Terraform Common Validation
+
+on:
+  workflow_call:
+    inputs:
+      terraform_fmt_version:
+        description: 'Terraform version to use for format check'
+        required: false
+        default: 'latest'
+        type: string
+      working_directory:
+        description: 'Working directory for Terraform files'
+        required: false
+        default: '.'
+        type: string
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  terraform-fmt:
+    name: Terraform Format Check
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: ${{ inputs.terraform_fmt_version }}
+
+    - name: Terraform Format Check
+      working-directory: ${{ inputs.working_directory }}
+      run: terraform fmt -check -recursive
+
+  version-extract:
+    name: Extract Min/Max Versions
+    runs-on: ubuntu-latest
+    outputs:
+      minVersion: ${{ steps.minMax.outputs.minVersion }}
+      maxVersion: ${{ steps.minMax.outputs.maxVersion }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Extract Terraform min/max versions
+        id: minMax
+        uses: clowdhaus/terraform-min-max@v1.4.1
+        with:
+          directory: ${{ inputs.working_directory }}
+
+  terraform-version-validate:
+    name: Validate Min/Max Versions
+    runs-on: ubuntu-latest
+    needs: version-extract
+    strategy:
+      matrix:
+        version:
+          - ${{ needs.version-extract.outputs.minVersion }}
+          - ${{ needs.version-extract.outputs.maxVersion }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Terraform v${{ matrix.version }}
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ matrix.version }}
+
+      - name: Initialize and validate v${{ matrix.version }}
+        working-directory: ${{ inputs.working_directory }}
+        run: |
+          terraform init
+          terraform validate
