@@ -1,0 +1,76 @@
+name: Update Changelog
+
+on:
+  workflow_call:
+    inputs:
+      releaseEvent:
+        description: 'Complete release event data'
+        required: true
+        type: string
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ fromJson(inputs.releaseEvent).target_commitish }}
+
+      - name: Get release with PR links
+        id: get_release_with_links
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_ID: ${{ fromJson(inputs.releaseEvent).id }}
+          REPO: ${{ github.repository }}
+        run: |
+          # Get release details
+          RELEASE_DATA=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+            "https://api.github.com/repos/$REPO/releases/$RELEASE_ID")
+          
+          # Get commits between tags
+          PREVIOUS_TAG=$(echo "$RELEASE_DATA" | jq -r '.target_commitish')
+          CURRENT_TAG="${{ fromJson(inputs.releaseEvent).tag_name }}"
+          
+          # Get commits in this release
+          COMMITS=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+            "https://api.github.com/repos/$REPO/compare/$PREVIOUS_TAG...$CURRENT_TAG" | jq -r '.commits[] | .sha')
+          
+          # Process each commit to find PR references
+          FORMATTED_BODY="${{ fromJson(inputs.releaseEvent).body }}"
+          
+          # Escape special characters in REPO for sed
+          ESCAPED_REPO=$(echo "$REPO" | sed 's/[\/&]/\\&/g')
+          
+          # Replace (#number) with links to PRs while keeping the (#number) format
+          FORMATTED_BODY=$(echo "$FORMATTED_BODY" | sed "s/(#\([0-9]\+\))/([#\1](https:\/\/github.com\/$ESCAPED_REPO\/pull\/\1))/g")
+          
+          echo "$REPO"
+          echo "formatted_body<<EOF" >> $GITHUB_OUTPUT
+          echo "$FORMATTED_BODY" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Echo release body
+        id: echo_body
+        run: |
+          echo "Release body with PR links:"
+          echo "${{ steps.get_release_with_links.outputs.formatted_body }}"
+          echo "body<<EOF" >> $GITHUB_OUTPUT
+          echo "${{ steps.get_release_with_links.outputs.formatted_body }}" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Update Changelog
+        uses: stefanzweifel/changelog-updater-action@v1
+        with:
+          latest-version: ${{ fromJson(inputs.releaseEvent).tag_name }}
+          release-notes: ${{ steps.echo_body.outputs.body }}
+
+      - name: Commit updated CHANGELOG
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          branch: ${{ fromJson(inputs.releaseEvent).target_commitish }}
+          commit_message: "chore(${{ fromJson(inputs.releaseEvent).target_commitish }}): release ${{ fromJson(inputs.releaseEvent).tag_name }}"
+          file_pattern: CHANGELOG.md 
