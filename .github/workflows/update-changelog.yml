@@ -19,6 +19,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ fromJson(inputs.releaseEvent).target_commitish }}
+          token: ${{ secrets.GITHUB_TOKEN }} 
 
       - name: Get release with PR links
         id: get_release_with_links
@@ -74,4 +75,3 @@ jobs:
           branch: ${{ fromJson(inputs.releaseEvent).target_commitish }}
           commit_message: "chore(${{ fromJson(inputs.releaseEvent).target_commitish }}): release ${{ fromJson(inputs.releaseEvent).tag_name }}"
           file_pattern: CHANGELOG.md
-          token: ${{ secrets.GITHUB_TOKEN }} 
