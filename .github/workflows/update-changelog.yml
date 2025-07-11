@@ -73,4 +73,5 @@ jobs:
         with:
           branch: ${{ fromJson(inputs.releaseEvent).target_commitish }}
           commit_message: "chore(${{ fromJson(inputs.releaseEvent).target_commitish }}): release ${{ fromJson(inputs.releaseEvent).tag_name }}"
-          file_pattern: CHANGELOG.md 
+          file_pattern: CHANGELOG.md
+          token: ${{ secrets.GITHUB_TOKEN }} 
