@@ -75,3 +75,4 @@ jobs:
           branch: ${{ fromJson(inputs.releaseEvent).target_commitish }}
           commit_message: "chore(${{ fromJson(inputs.releaseEvent).target_commitish }}): release ${{ fromJson(inputs.releaseEvent).tag_name }}"
           file_pattern: CHANGELOG.md
+          push_options: --force  ##if you use GITHUB_TOKEN
