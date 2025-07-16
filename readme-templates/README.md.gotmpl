@@ -1,0 +1,66 @@
+# {{ product_title }}
+{{ badges }}
+{{ introduction }}
+
+## 📦 Module: {{ module_name }}
+{{ module_description }}
+
+### ✨ Features
+{% for feature in features %}
+- {{ feature.icon }} [{{ feature.title }}](#{{ feature.title | lower | replace(' ', '-') }}) - {{ feature.short_description }}
+{% endfor %}
+
+{% if external_modules %}
+### 🔗 External Modules
+{% for mod in external_modules %}
+- [{{ mod.name }}]({{ mod.url }}){% if mod.version %} version {{ mod.version }}{% endif %}
+{% endfor %}
+{% endif %}
+
+## 🚀 Quick Start
+{{ quick_start }}
+
+## 🔧 Additional Features Usage
+{% for feature in features %}
+### {{ feature.title }}
+{{ feature.long_description }}
+{% for example in feature.examples %}
+<details><summary>{{ example.title }}</summary>
+
+{{ example.code }}
+
+</details>
+{% endfor %}
+{% endfor %}
+
+{% if variables_table %}
+## 📑 Variables
+{{ variables_table }}
+{% endif %}
+
+{% if outputs_table %}
+## 📤 Outputs
+{{ outputs_table }}
+{% endif %}
+
+{% if examples %}
+## 📚 Examples
+{{ examples }}
+{% endif %}
+
+## ⚠️ Important Warnings
+{{ important_warnings }}
+
+---
+
+## 🤝 Contributing
+{{ contributing }}
+
+## 🆘 Support
+{{ support }}
+
+## 🧑‍💻 About
+{{ about }}
+
+## 📄 License
+{{ license }} 
