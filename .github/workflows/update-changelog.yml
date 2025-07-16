@@ -22,7 +22,7 @@ jobs:
         uses: actions/create-github-app-token@v2
         with:
           app-id: ${{ vars.BOT_GOCLOUD_APP_ID }}
-          app-private-key: ${{ secrets.BOT_GOCLOUD_PRIVATE_KEY }}
+          private-key: ${{ secrets.BOT_GOCLOUD_PRIVATE_KEY }}
 
       - name: Checkout code
         uses: actions/checkout@v4
