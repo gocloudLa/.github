@@ -17,16 +17,23 @@ jobs:
       statuses: write
 
     steps:
+      - name: Generate GitHub App Token
+        id: generate-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.BOT_GOCLOUD_APP_ID }}
+          app-private-key: ${{ secrets.BOT_GOCLOUD_PRIVATE_KEY }}
+
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           ref: ${{ fromJson(inputs.releaseEvent).target_commitish }}
-          token: ${{ secrets.GITHUB_TOKEN }} 
+          token: ${{ steps.generate-token.outputs.token }}
 
       - name: Get release with PR links
         id: get_release_with_links
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
           RELEASE_ID: ${{ fromJson(inputs.releaseEvent).id }}
           REPO: ${{ github.repository }}
         run: |
@@ -77,4 +84,4 @@ jobs:
           branch: ${{ fromJson(inputs.releaseEvent).target_commitish }}
           commit_message: "chore(${{ fromJson(inputs.releaseEvent).target_commitish }}): release ${{ fromJson(inputs.releaseEvent).tag_name }}"
           file_pattern: CHANGELOG.md
-          push_options: --force  ##if you use GITHUB_TOKEN
+          push_options: --force
