@@ -23,8 +23,10 @@ Each module encapsulates best practices, security configurations, and sensible d
 
 {% if external_modules %}
 ### 🔗 External Modules
-{% for mod in external_modules %}
-- [{{ mod.name }}]({{ mod.url }}){% if mod.version %} version {{ mod.version }}{% endif %}
+| Name | Version |
+|------|------:|
+{% for mod in external_modules -%}
+| [{{ mod.name }}]({{ mod.url }}) | {{ mod.version or '' }} |
 {% endfor %}
 {% endif %}
 
