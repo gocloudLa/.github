@@ -37,9 +37,8 @@ jobs:
         run: |
           python .action-tmp/readme-templates/generate_readme.py \
             --yaml ${{ inputs.readme_yaml }} \
-            --general .action-tmp/readme-templates/README.general.yaml \
             --template .action-tmp/readme-templates/README.md.gotmpl \
-            --external ${{ inputs.external_modules }} \
+            --external_modules ${{ inputs.external_modules }} \
             --output ${{ inputs.output_path }}
       - name: Commit README if changed
         run: |
