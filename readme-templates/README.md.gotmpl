@@ -48,10 +48,10 @@ Each module encapsulates best practices, security configurations, and sensible d
 
 {% if variables_plain or variables_yaml %}
 ## 📑 Variables
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|----------|
 {% if variables_plain %}{{ variables_plain }}{% endif %}{% if variables_yaml %}{% for var in variables_yaml -%}
-| {{ var.name }} | {{ var.type }} | {{ var.default }} | {{ var.description }} |
+| {{ var.name }} | {{ var.description }} | {{ var.type }} | {{ var.default }} | {{ var.required }} |
 {% endfor %}{% endif %}
 {% endif %}
 
