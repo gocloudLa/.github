@@ -47,8 +47,7 @@ jobs:
       - name: Check for changes
         id: check_changes
         run: |
-          git add ${{ inputs.output_path }}
-          if git diff --cached --quiet; then
+          if git diff --quiet ${{ inputs.output_path }}; then
             echo "has_changes=false" >> $GITHUB_OUTPUT
           else
             echo "has_changes=true" >> $GITHUB_OUTPUT
@@ -56,37 +55,17 @@ jobs:
       - name: Create or update PR
         if: steps.check_changes.outputs.has_changes == 'true'
         run: |
-          BRANCH_NAME="update-readme"
-          PR_TITLE="chore(doc): update README.md"
-          PR_BODY="Automated README update"
-          
           # Configure git
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           
-          # Check if branch exists
-          if git ls-remote --heads origin $BRANCH_NAME | grep -q $BRANCH_NAME; then
-            # Branch exists, update it
-            git fetch origin $BRANCH_NAME
-            git checkout -B $BRANCH_NAME origin/$BRANCH_NAME
-            git add ${{ inputs.output_path }}
-            git commit -m "$PR_TITLE [skip ci]"
-            git push origin $BRANCH_NAME
-            echo "Updated existing branch: $BRANCH_NAME"
-          else
-            # Create new branch
-            git checkout -b $BRANCH_NAME
-            git add ${{ inputs.output_path }}
-            git commit -m "$PR_TITLE [skip ci]"
-            git push origin $BRANCH_NAME
-            
-            # Create PR using GitHub CLI
-            gh pr create \
-              --title "$PR_TITLE" \
-              --body "$PR_BODY" \
-              --base main \
-              --head $BRANCH_NAME
-            echo "Created new PR for branch: $BRANCH_NAME"
-          fi
+          # Create or update branch
+          git checkout -B update-readme
+          git add ${{ inputs.output_path }}
+          git commit -m "chore(doc): update README.md [skip ci]"
+          git push -f origin update-readme
+          
+          # Create PR if doesn't exist
+          gh pr create --title "chore(doc): update README.md" --body "Automated README update" --base main --head update-readme 2>/dev/null || true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
