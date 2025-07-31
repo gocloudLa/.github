@@ -32,8 +32,8 @@ jobs:
           cd ${TERRAFORM_DIR:-example/complete}
           terraform init -input=false -backend=false > /dev/null 2>&1
           
-          # Get modules and process them
-          modules_array=()
+          # Use associative array to track unique modules
+          declare -A unique_modules
           
           # Capture terraform modules output
           terraform_modules_output=$(terraform modules)
@@ -69,12 +69,14 @@ jobs:
                 --arg version "$current_version" \
                 '{name: $name, url: $url, version: $version}')
               
-              modules_array+=("$module_json")
+              # Use URL + version as unique key
+              unique_key="${namespace}/${name}-${provider}|${current_version}"
+              unique_modules[$unique_key]=$module_json
             fi
           done <<< "$terraform_modules_output"
           
-          # Create JSON array and sort by name
-          modules_json=$(printf '%s\n' "${modules_array[@]}" | jq -s 'sort_by(.name)')
+          # Convert unique modules to array and sort by name
+          modules_json=$(printf '%s\n' "${unique_modules[@]}" | jq -s 'sort_by(.name)')
           
           # Create temporary file
           echo "$modules_json" > /tmp/external_modules.json
