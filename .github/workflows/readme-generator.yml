@@ -6,7 +6,7 @@ on:
       readme_yaml:
         required: false
         type: string
-        default: .github/README.yml
+        default: README.yml
       output_path:
         required: false
         type: string
