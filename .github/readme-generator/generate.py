@@ -4,9 +4,9 @@ import argparse
 from jinja2 import Template
 
 parser = argparse.ArgumentParser(description="Genera README.md a partir de templates y datos YAML/JSON.")
-parser.add_argument('--yaml', default='.readme/README.yaml')
-parser.add_argument('--template', default='.readme-generic/README.md.gotmpl')
-parser.add_argument('--external_modules', default='.readme/external_modules.json')
+parser.add_argument('--yaml', default='README.yml')
+parser.add_argument('--template', default='.github/readme-generator/README.md.gotmpl')
+parser.add_argument('--external_modules', default='external_modules.json')
 parser.add_argument('--output', default='README.md')
 args = parser.parse_args()
 

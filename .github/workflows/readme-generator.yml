@@ -96,13 +96,13 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r .action-tmp/readme-templates/requirements.txt
+          pip install -r .action-tmp/.github/readme-generator/requirements.txt
 
       - name: Readme Generator
         run: |
-          python .action-tmp/readme-templates/generate_readme.py \
+          python .action-tmp/.github/readme-generator/generate.py \
             --yaml ${{ inputs.readme_yaml }} \
-            --template .action-tmp/readme-templates/README.md.gotmpl \
+            --template .action-tmp/.github/readme-generator/README.md.gotmpl \
             --external_modules /tmp/external_modules.json \
             --output ${{ inputs.output_path }}
 
