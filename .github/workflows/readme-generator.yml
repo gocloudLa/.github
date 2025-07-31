@@ -4,11 +4,13 @@ on:
   workflow_call:
     inputs:
       readme_yaml:
-        required: true
+        required: false
         type: string
+        default: .github/README.yml
       external_modules:
-        required: true
+        required: false
         type: string
+        default: .github/external_modules.json
       output_path:
         required: false
         type: string
@@ -19,6 +21,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Download reusable action content
         uses: actions/checkout@v3
         with:
@@ -40,12 +44,49 @@ jobs:
             --template .action-tmp/readme-templates/README.md.gotmpl \
             --external_modules ${{ inputs.external_modules }} \
             --output ${{ inputs.output_path }}
-      - name: Commit README if changed
+      - name: Check for changes
+        id: check_changes
         run: |
+          git add ${{ inputs.output_path }}
+          if git diff --cached --quiet; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+      - name: Create or update PR
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          BRANCH_NAME="update-readme"
+          PR_TITLE="chore(doc): update README.md"
+          PR_BODY="Automated README update"
+          
+          # Configure git
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add ${{ inputs.output_path }}
-          git diff --cached --quiet || git commit -m "chore(doc): update README.md [skip ci]"
-          git push
+          
+          # Check if branch exists
+          if git ls-remote --heads origin $BRANCH_NAME | grep -q $BRANCH_NAME; then
+            # Branch exists, update it
+            git fetch origin $BRANCH_NAME
+            git checkout -B $BRANCH_NAME origin/$BRANCH_NAME
+            git add ${{ inputs.output_path }}
+            git commit -m "$PR_TITLE [skip ci]"
+            git push origin $BRANCH_NAME
+            echo "Updated existing branch: $BRANCH_NAME"
+          else
+            # Create new branch
+            git checkout -b $BRANCH_NAME
+            git add ${{ inputs.output_path }}
+            git commit -m "$PR_TITLE [skip ci]"
+            git push origin $BRANCH_NAME
+            
+            # Create PR using GitHub CLI
+            gh pr create \
+              --title "$PR_TITLE" \
+              --body "$PR_BODY" \
+              --base main \
+              --head $BRANCH_NAME
+            echo "Created new PR for branch: $BRANCH_NAME"
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
