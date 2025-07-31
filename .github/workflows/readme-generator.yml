@@ -7,10 +7,6 @@ on:
         required: false
         type: string
         default: .github/README.yml
-      external_modules:
-        required: false
-        type: string
-        default: .github/external_modules.json
       output_path:
         required: false
         type: string
@@ -23,27 +19,91 @@ jobs:
       - uses: actions/checkout@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "latest"
+
+      - name: Detect Terraform modules
+        id: detect_modules
+        run: |
+          # Change to terraform directory and initialize
+          cd ${TERRAFORM_DIR:-example/complete}
+          terraform init -input=false -backend=false > /dev/null 2>&1
+          
+          # Get modules and process them
+          modules_array=()
+          
+          # Capture terraform modules output
+          terraform_modules_output=$(terraform modules)
+          
+          while IFS= read -r line; do
+            module_info=$(echo "$line" | sed -nE 's/.*"([^"]+)"\[([^]]+)\][[:space:]]+([0-9]+\.[0-9]+\.[0-9]+).*$/\1|\2|\3/p')
+            
+            if [[ -n "$module_info" ]]; then
+              IFS="|" read -r module_name module_path current_version <<< "$module_info"
+              
+              # Clean up module name and version
+              module_name=$(echo "$module_name" | sed 's/^module\.//; s/ *$//')
+              module_path=$(echo "$module_path" | xargs)
+              current_version=$(echo "$current_version" | xargs | sed 's/^[^0-9]*//')
+              
+              # Skip non-registry modules
+              if [[ ! "$module_path" =~ ^registry\.terraform\.io/ ]]; then
+                continue
+              fi
+              
+              # Extract namespace, name, and provider
+              MODULE_INFO=$(echo "$module_path" | sed 's|^registry\.terraform\.io/||' | cut -d/ -f1-3)
+              IFS='/' read -r namespace name provider <<< "$MODULE_INFO"
+              
+              if [[ -z "$namespace" || -z "$name" || -z "$provider" ]]; then
+                continue
+              fi
+              
+              # Create module info as JSON
+              module_json=$(jq -n \
+                --arg name "${namespace}/${name}/${provider}" \
+                --arg url "https://github.com/${namespace}/${name}-${provider}" \
+                --arg version "$current_version" \
+                '{name: $name, url: $url, version: $version}')
+              
+              modules_array+=("$module_json")
+            fi
+          done <<< "$terraform_modules_output"
+          
+          # Create JSON array and sort by name
+          modules_json=$(printf '%s\n' "${modules_array[@]}" | jq -s 'sort_by(.name)')
+          
+          # Create temporary file
+          echo "$modules_json" > /tmp/external_modules.json
+
       - name: Download reusable action content
         uses: actions/checkout@v3
         with:
           repository: gocloudLa/.github
           ref: feature/readme-generator # Remover esta ref finalizado el desarrollo
           path: .action-tmp
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r .action-tmp/readme-templates/requirements.txt
+
       - name: Readme Generator
         run: |
           python .action-tmp/readme-templates/generate_readme.py \
             --yaml ${{ inputs.readme_yaml }} \
             --template .action-tmp/readme-templates/README.md.gotmpl \
-            --external_modules ${{ inputs.external_modules }} \
+            --external_modules /tmp/external_modules.json \
             --output ${{ inputs.output_path }}
+
       - name: Check for changes
         id: check_changes
         run: |
@@ -52,6 +112,7 @@ jobs:
           else
             echo "has_changes=true" >> $GITHUB_OUTPUT
           fi
+
       - name: Create or update PR
         if: steps.check_changes.outputs.has_changes == 'true'
         run: |
