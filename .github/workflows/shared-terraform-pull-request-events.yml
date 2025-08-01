@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   pull-request-validation:
-    # if: github.event_name == 'pull_request_target'
+    if: github.event_name == 'pull_request' && (github.event.action == 'opened' || github.event.action == 'edited' || github.event.action == 'reopened')
     uses: gocloudLa/.github/.github/workflows/pull-request-validation.yml@feature/readme-generator
     secrets: inherit 
     # with:
@@ -22,6 +22,6 @@ jobs:
     #   output_path: ${{ inputs.output_path }}
 
   terraform-validation:
-    # if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && (github.event.action == 'opened' || github.event.action == 'reopened' || github.event.action == 'synchronize')
     uses: gocloudLa/.github/.github/workflows/terraform-validation.yml@feature/readme-generator
     secrets: inherit
