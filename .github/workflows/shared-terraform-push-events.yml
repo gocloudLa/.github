@@ -1,0 +1,19 @@
+name: "Shared Terraform Push Events"
+
+on:
+  workflow_call:
+    inputs:
+      foo:
+        required: false
+        type: string
+        default: bar
+
+concurrency:
+  group: shared-terraform-push-events-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  release:
+    if: github.event_name == 'push'
+    uses: gocloudLa/.github/.github/workflows/terraform-release.yml@feature/readme-generator
+    secrets: inherit
