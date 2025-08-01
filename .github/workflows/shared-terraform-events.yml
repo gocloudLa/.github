@@ -9,7 +9,7 @@ on:
         default: bar
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: shared-terraform-events-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
