@@ -36,9 +36,9 @@ jobs:
         with:
           repository: gocloudLa/.github
           ref: feature/readme-generator # Remover esta ref finalizado el desarrollo
-          path: /tmp/temp_repository
+          path: ./shared-repository
 
       - name: Debug Files
         run: |
           pwd
-          find /tmp/temp_repository
+          find ./shared-repository
