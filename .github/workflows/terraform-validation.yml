@@ -58,8 +58,8 @@ jobs:
     strategy:
       matrix:
         version:
-          - ${{ needs.version-extract.outputs.minVersion }}
-          - ${{ needs.version-extract.outputs.maxVersion }}
+          - ${{ needs.terraform-validation-get-versions.outputs.minVersion }}
+          - ${{ needs.terraform-validation-get-versions.outputs.maxVersion }}
 
     steps:
       - name: Checkout
