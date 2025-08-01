@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   pull-request-validation:
-    if: github.event_name == 'pull_request'
+    # if: github.event_name == 'pull_request'
     uses: gocloudLa/.github/.github/workflows/pull-request-validation.yml@feature/readme-generator
     secrets: inherit 
     # with:
