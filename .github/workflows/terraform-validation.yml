@@ -19,8 +19,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  terraform-fmt:
-    name: fmt
+  terraform-validation-fmt:
+    name: Terraform Validation FMT
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -35,7 +35,7 @@ jobs:
       working-directory: ${{ inputs.working_directory }}
       run: terraform fmt -check -recursive
 
-  get-versions:
+  terraform-validation-get-versions:
     name: Get Min/Max versions
     runs-on: ubuntu-latest
     outputs:
@@ -51,8 +51,8 @@ jobs:
         with:
           directory: ${{ inputs.working_directory }}
 
-  terraform-version-validate:
-    name: Validate
+  terraform-validation-validate:
+    name: Terraform Validation Validate
     runs-on: ubuntu-latest
     needs: get-versions
     strategy:

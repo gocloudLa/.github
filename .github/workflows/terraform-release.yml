@@ -1,0 +1,19 @@
+name: Terraform Release
+
+on:
+  workflow_call:
+    inputs:
+      foo:
+        required: false
+        type: string
+        default: bar
+
+jobs:
+  terraform-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          release-type: terraform-module
+          target-branch: main

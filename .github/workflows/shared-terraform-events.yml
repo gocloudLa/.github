@@ -1,0 +1,32 @@
+name: "Shared Terraform Events"
+
+on:
+  workflow_call:
+    inputs:
+      foo:
+        required: false
+        type: string
+        default: bar
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  pull-request-validation:
+    if: github.event_name == 'pull_request'
+    uses: gocloudLa/.github/.github/workflows/pull-request-validation.yml@feature/readme-generator
+    secrets: inherit 
+    # with:
+    #   readme_yaml: ${{ inputs.readme_yaml }}
+    #   output_path: ${{ inputs.output_path }}
+
+  terraform-validation:
+    if: github.event_name == 'pull_request'
+    uses: gocloudLa/.github/.github/workflows/terraform-validation.yml@feature/readme-generator
+    secrets: inherit
+
+  release:
+    if: github.event_name == 'push'
+    uses: gocloudLa/.github/.github/workflows/terraform-release.yml@feature/readme-generator
+    secrets: inherit
