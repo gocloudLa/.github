@@ -25,3 +25,11 @@ jobs:
     # if: github.event_name == 'pull_request' && (github.event.action == 'opened' || github.event.action == 'reopened' || github.event.action == 'synchronize')
     uses: gocloudLa/.github/.github/workflows/terraform-validation.yml@feature/readme-generator
     secrets: inherit
+
+  workflow-summary:
+    if: ${{ always() }}
+    steps:
+      - run: |
+          echo '${{ toJSON(needs) }}'  # easier debug
+          ! ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
+    needs: [ pull-request-validation, terraform-validation ]
