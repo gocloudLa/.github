@@ -125,7 +125,7 @@ jobs:
           # Create or update branch
           git checkout -B update-readme
           git add ${{ inputs.output_path }}
-          git commit -m "chore(doc): update README.md [skip ci]"
+          git commit -m "chore(doc): update README.md"
           git push -f origin update-readme
           
           # Create PR if doesn't exist
