@@ -129,6 +129,6 @@ jobs:
           git push -f origin update-readme
           
           # Create PR if doesn't exist
-          gh pr create --title "chore(doc): update README.md" --body "Automated README update" --base main --head update-readme 2>/dev/null || true
+          # gh pr create --title "chore(doc): update README.md" --body "Automated README update" --base main --head update-readme 2>/dev/null || true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
