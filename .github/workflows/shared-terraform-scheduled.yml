@@ -3,6 +3,11 @@ name: "Shared Terraform Scheduled"
 on:
   workflow_call:
     inputs:
+      workflow_ref:
+        required: false
+        type: string
+        default: main
+        description: "Branch or ref to use for workflow references"
       readme_yaml:
         required: false
         type: string
@@ -18,12 +23,12 @@ concurrency:
 
 jobs:
   readme:
-    uses: gocloudLa/.github/.github/workflows/terraform-readme-generator.yml@feature/readme-generator
+    uses: gocloudLa/.github/.github/workflows/terraform-readme-generator.yml@${{ inputs.workflow_ref }}
     secrets: inherit 
     with:
       readme_yaml: ${{ inputs.readme_yaml }}
       output_path: ${{ inputs.output_path }}
 
   maintenance:
-    uses: gocloudLa/.github/.github/workflows/terraform-maintenance.yml@feature/readme-generator
+    uses: gocloudLa/.github/.github/workflows/terraform-maintenance.yml@${{ inputs.workflow_ref }}
     secrets: inherit

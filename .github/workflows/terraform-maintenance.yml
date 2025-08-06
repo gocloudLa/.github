@@ -3,6 +3,11 @@ name: General Maintenance (Reusable)
 on:
   workflow_call:
     inputs:
+      workflow_ref:
+        required: false
+        type: string
+        default: main
+        description: "Branch or ref to use for workflow references"
       foo:
         required: false
         type: string
@@ -35,7 +40,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: gocloudLa/.github
-          ref: feature/readme-generator # Remover esta ref finalizado el desarrollo
+          ref: ${{ inputs.workflow_ref }}
           path: ./shared-repository
 
       - name: Debug Files

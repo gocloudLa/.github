@@ -3,6 +3,11 @@ name: "Shared Terraform Pull Request Events"
 on:
   workflow_call:
     inputs:
+      workflow_ref:
+        required: false
+        type: string
+        default: main
+        description: "Branch or ref to use for workflow references"
       foo:
         required: false
         type: string
@@ -15,7 +20,7 @@ concurrency:
 jobs:
   pull-request-validation:
     # if: github.event_name == 'pull_request' && (github.event.action == 'opened' || github.event.action == 'edited' || github.event.action == 'reopened')
-    uses: gocloudLa/.github/.github/workflows/pull-request-validation.yml@feature/readme-generator
+    uses: gocloudLa/.github/.github/workflows/pull-request-validation.yml@${{ inputs.workflow_ref }}
     secrets: inherit 
     # with:
     #   readme_yaml: ${{ inputs.readme_yaml }}
@@ -23,7 +28,7 @@ jobs:
 
   terraform-validation:
     # if: github.event_name == 'pull_request' && (github.event.action == 'opened' || github.event.action == 'reopened' || github.event.action == 'synchronize')
-    uses: gocloudLa/.github/.github/workflows/terraform-validation.yml@feature/readme-generator
+    uses: gocloudLa/.github/.github/workflows/terraform-validation.yml@${{ inputs.workflow_ref }}
     secrets: inherit
 
   workflow-summary:
