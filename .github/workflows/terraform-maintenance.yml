@@ -3,25 +3,16 @@ name: General Maintenance (Reusable)
 on:
   workflow_call:
     inputs:
-      workflow_ref:
-        required: false
-        type: string
-        default: main
-        description: "Branch or ref to use for workflow references"
       foo:
         required: false
         type: string
         default: bar
-      # output_path:
-      #   required: false
-      #   type: string
-      #   default: README.md
 
 jobs:
   general-maintenance:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -40,7 +31,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: gocloudLa/.github
-          ref: ${{ inputs.workflow_ref }}
+          ref: feature/readme-generator
           path: ./shared-repository
 
       - name: Debug Files

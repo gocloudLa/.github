@@ -3,11 +3,6 @@ name: Readme Generator (Reusable)
 on:
   workflow_call:
     inputs:
-      workflow_ref:
-        required: false
-        type: string
-        default: main
-        description: "Branch or ref to use for workflow references"
       readme_yaml:
         required: false
         type: string
@@ -21,7 +16,7 @@ jobs:
   generate-readme:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -87,10 +82,10 @@ jobs:
           echo "$modules_json" > /tmp/external_modules.json
 
       - name: Download reusable action content
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: gocloudLa/.github
-          ref: ${{ inputs.workflow_ref }}
+          ref: feature/readme-generator
           path: .action-tmp
 
       - name: Set up Python
