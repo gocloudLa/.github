@@ -1,26 +1,11 @@
 # Standard Platform - Terraform Module 🚀🚀
-<p align="right">
-  <a href="https://partners.amazonaws.com/partners/0018a00001hHve4AAC/GoCloud">
-    <img src="https://img.shields.io/badge/AWS%20Partner-Advanced-orange?style=for-the-badge&logo=amazonaws&logoColor=white" alt="AWS Partner"/>
-  </a>
-  <a href="LICENSE">
-    <img src="https://img.shields.io/badge/License-Apache%202.0-green?style=for-the-badge&logo=apache&logoColor=white" alt="LICENSE"/>
-  </a>
-</p>
+<p align="right"><a href="https://partners.amazonaws.com/partners/0018a00001hHve4AAC/GoCloud"><img src="https://img.shields.io/badge/AWS%20Partner-Advanced-orange?style=for-the-badge&logo=amazonaws&logoColor=white" alt="AWS Partner"/></a><a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-green?style=for-the-badge&logo=apache&logoColor=white" alt="LICENSE"/></a></p>
 
 Welcome to the Standard Platform — a suite of reusable and production-ready Terraform modules purpose-built for AWS environments.
 Each module encapsulates best practices, security configurations, and sensible defaults to simplify and standardize infrastructure provisioning across projects.
 
 ## 📦 Module: {{ module_name }}
-{% if module_badges %}
-<p align="right">
-{% for badge in module_badges %}
-  <a href="{{ badge.url }}">
-    <img src="{{ badge.image }}" alt="{{ badge.alt }}"/>
-  </a>
-{% endfor %}
-</p>
-{% endif %}
+{% if module_badges %}<p align="right">{% for badge in module_badges %}<a href="{{ badge.url }}"><img src="{{ badge.image }}" alt="{{ badge.alt }}"/></a>{% endfor %}</p>{% endif %}
 {{ module_description }}
 
 ### ✨ Features
