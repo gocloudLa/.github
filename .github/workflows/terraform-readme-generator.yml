@@ -29,7 +29,7 @@ jobs:
         id: detect_modules
         run: |
           # Change to terraform directory and initialize
-          cd ${TERRAFORM_DIR:-example/complete}
+          cd ${TERRAFORM_DIR:-examples/complete}
           terraform init -input=false -backend=false > /dev/null 2>&1
           
           # Use associative array to track unique modules
