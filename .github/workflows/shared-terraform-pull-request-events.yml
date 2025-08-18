@@ -21,6 +21,10 @@ jobs:
     uses: gocloudLa/.github/.github/workflows/terraform-validation.yml@feature/readme-generator
     secrets: inherit
 
+  readme-generator:
+    uses: gocloudLa/.github/.github/workflows/terraform-readme-generator.yml@feature/readme-generator
+    secrets: inherit
+
   workflow-summary:
     if: ${{ always() }}
     runs-on: ubuntu-latest
@@ -29,10 +33,3 @@ jobs:
       - run: |
           echo '${{ toJSON(needs) }}'  # easier debug
           ! ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
-
-  readme-generator:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Generate README
-        uses: ./.github/workflows/terraform-readme-generator.yml
-        secrets: inherit
