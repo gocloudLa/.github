@@ -148,7 +148,7 @@ jobs:
           git push origin ${{ github.head_ref }}
           
           # Convert PR to draft
-          gh pr edit ${{ github.event.number }} --draft
+          gh pr ready ${{ github.event.number }} --undo
           
           echo "✅ README.md updated and committed to PR branch"
           echo "✅ PR converted to draft"
