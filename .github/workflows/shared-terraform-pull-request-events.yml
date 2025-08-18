@@ -28,7 +28,7 @@ jobs:
   workflow-summary:
     if: ${{ always() }}
     runs-on: ubuntu-latest
-    needs: [ pull-request-validation, terraform-validation ]
+    needs: [ pull-request-validation, terraform-validation, readme-generator ]
     steps:
       - run: |
           echo '${{ toJSON(needs) }}'  # easier debug
