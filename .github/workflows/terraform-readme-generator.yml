@@ -147,6 +147,10 @@ jobs:
           git commit -m "chore(doc): update README.md [skip ci]"
           git push origin ${{ github.head_ref }}
           
+          # Convert PR to draft
+          gh pr edit ${{ github.event.number }} --draft
+          
           echo "✅ README.md updated and committed to PR branch"
+          echo "✅ PR converted to draft"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
