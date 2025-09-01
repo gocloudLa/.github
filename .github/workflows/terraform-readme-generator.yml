@@ -118,7 +118,7 @@ jobs:
       - name: Check for changes
         id: check_changes
         run: |
-          if git diff --quiet ${{ inputs.output_path }}; then
+          if git diff --quiet README.md */README.md; then
             echo "has_changes=false" >> $GITHUB_OUTPUT
           else
             echo "has_changes=true" >> $GITHUB_OUTPUT
