@@ -100,13 +100,16 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r .action-tmp/.github/readme-generator/requirements.txt
 
-      - name: Readme Generator
+      - name: Readme Generator (main)
         run: |
           python .action-tmp/.github/readme-generator/generate.py \
             --yaml ${{ inputs.readme_yaml }} \
             --template .action-tmp/.github/readme-generator/README.md.gotmpl \
             --external_modules /tmp/external_modules.json \
             --output ${{ inputs.output_path }}
+
+      - name: Readme Generator (examples)
+        run: |
           python .action-tmp/.github/readme-generator/generate_example.py \
             --yaml example/complete/README.yml \
             --template .action-tmp/.github/readme-generator/README.md.gotmpl \
