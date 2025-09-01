@@ -18,12 +18,12 @@ concurrency:
 
 jobs:
   readme:
-    uses: gocloudLa/.github/.github/workflows/terraform-readme-generator.yml@feature/readme-generator
+    uses: gocloudLa/.github/.github/workflows/terraform-readme-generator.yml@main
     secrets: inherit 
     with:
       readme_yaml: ${{ inputs.readme_yaml }}
       output_path: ${{ inputs.output_path }}
 
   maintenance:
-    uses: gocloudLa/.github/.github/workflows/terraform-maintenance.yml@feature/readme-generator
+    uses: gocloudLa/.github/.github/workflows/terraform-maintenance.yml@main
     secrets: inherit

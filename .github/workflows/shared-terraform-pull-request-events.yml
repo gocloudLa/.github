@@ -14,15 +14,15 @@ concurrency:
 
 jobs:
   pull-request-validation:
-    uses: gocloudLa/.github/.github/workflows/pull-request-validation.yml@feature/readme-generator
+    uses: gocloudLa/.github/.github/workflows/pull-request-validation.yml@main
     secrets: inherit 
 
   terraform-validation:
-    uses: gocloudLa/.github/.github/workflows/terraform-validation.yml@feature/readme-generator
+    uses: gocloudLa/.github/.github/workflows/terraform-validation.yml@main
     secrets: inherit
 
   readme-generator:
-    uses: gocloudLa/.github/.github/workflows/terraform-readme-generator.yml@feature/readme-generator
+    uses: gocloudLa/.github/.github/workflows/terraform-readme-generator.yml@main
     secrets: inherit
 
   workflow-summary:
