@@ -112,7 +112,7 @@ jobs:
         run: |
           python .action-tmp/.github/readme-generator/generate_examples.py \
             --yaml examples/complete/README.yml \
-            --template .action-tmp/.github/readme-generator/README.md.gotmpl \
+            --template .action-tmp/.github/readme-generator/README_example.md.gotmpl \
             --output examples/complete/README.md || true
 
       - name: Check for changes
