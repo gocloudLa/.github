@@ -110,10 +110,10 @@ jobs:
 
       - name: Readme Generator (examples)
         run: |
-          python .action-tmp/.github/readme-generator/generate_example.py \
-            --yaml example/complete/README.yml \
+          python .action-tmp/.github/readme-generator/generate_examples.py \
+            --yaml examples/complete/README.yml \
             --template .action-tmp/.github/readme-generator/README.md.gotmpl \
-            --output example/complete/README.md || true
+            --output examples/complete/README.md || true
 
       - name: Check for changes
         id: check_changes

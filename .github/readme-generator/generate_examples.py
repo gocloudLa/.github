@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Example README Generator
-Generates README.md files for example directories using YAML data and templates.
+Generates README.md files for examples directories using YAML data and templates.
 """
 
 import yaml
@@ -28,8 +28,8 @@ def load_template(template_file):
         print(f"Error loading template file {template_file}: {e}")
         return None
 
-def generate_example_readme(yaml_file, template_file, output_file):
-    """Generate README.md for example directory"""
+def generate_examples_readme(yaml_file, template_file, output_file):
+    """Generate README.md for examples directory"""
     
     # Load YAML data
     data = load_yaml_data(yaml_file)
@@ -70,15 +70,15 @@ def generate_example_readme(yaml_file, template_file, output_file):
     try:
         with open(output_file, 'w', encoding='utf-8') as f:
             f.write(readme_content)
-        print(f"✅ Example README generated: {output_file}")
+        print(f"✅ Examples README generated: {output_file}")
         return True
     except Exception as e:
         print(f"Error writing output file {output_file}: {e}")
         return False
 
 def main():
-    parser = argparse.ArgumentParser(description="Generate README.md for example directories")
-    parser.add_argument('--yaml', required=True, help='YAML file with example data')
+    parser = argparse.ArgumentParser(description="Generate README.md for examples directories")
+    parser.add_argument('--yaml', required=True, help='YAML file with examples data')
     parser.add_argument('--template', required=True, help='Jinja2 template file')
     parser.add_argument('--output', required=True, help='Output README.md file')
     
@@ -94,7 +94,7 @@ def main():
         sys.exit(1)
     
     # Generate README
-    success = generate_example_readme(args.yaml, args.template, args.output)
+    success = generate_examples_readme(args.yaml, args.template, args.output)
     sys.exit(0 if success else 1)
 
 if __name__ == "__main__":
