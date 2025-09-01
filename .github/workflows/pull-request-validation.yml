@@ -1,4 +1,4 @@
-name: PR Configuration Check
+name: Pull Request Validation
 
 on:
   workflow_call:
@@ -19,8 +19,8 @@ on:
         type: boolean
 
 jobs:
-  pr-title:
-    name: PR title
+  check-pr-title:
+    name: Check Pull Request Title
     runs-on: ubuntu-latest
     permissions:
       pull-requests: read

@@ -1,0 +1,29 @@
+name: "Shared Terraform Scheduled"
+
+on:
+  workflow_call:
+    inputs:
+      readme_yaml:
+        required: false
+        type: string
+        default: README.yml
+      output_path:
+        required: false
+        type: string
+        default: README.md
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  readme:
+    uses: gocloudLa/.github/.github/workflows/terraform-readme-generator.yml@feature/readme-generator
+    secrets: inherit 
+    with:
+      readme_yaml: ${{ inputs.readme_yaml }}
+      output_path: ${{ inputs.output_path }}
+
+  maintenance:
+    uses: gocloudLa/.github/.github/workflows/terraform-maintenance.yml@feature/readme-generator
+    secrets: inherit

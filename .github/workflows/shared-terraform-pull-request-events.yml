@@ -1,0 +1,35 @@
+name: "Shared Terraform Pull Request Events"
+
+on:
+  workflow_call:
+    inputs:
+      foo:
+        required: false
+        type: string
+        default: bar
+
+concurrency:
+  group: shared-terraform-pull-request-events-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pull-request-validation:
+    uses: gocloudLa/.github/.github/workflows/pull-request-validation.yml@feature/readme-generator
+    secrets: inherit 
+
+  terraform-validation:
+    uses: gocloudLa/.github/.github/workflows/terraform-validation.yml@feature/readme-generator
+    secrets: inherit
+
+  readme-generator:
+    uses: gocloudLa/.github/.github/workflows/terraform-readme-generator.yml@feature/readme-generator
+    secrets: inherit
+
+  workflow-summary:
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    needs: [ pull-request-validation, terraform-validation, readme-generator ]
+    steps:
+      - run: |
+          echo '${{ toJSON(needs) }}'  # easier debug
+          ! ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}

@@ -1,0 +1,40 @@
+name: General Maintenance (Reusable)
+
+on:
+  workflow_call:
+    inputs:
+      foo:
+        required: false
+        type: string
+        default: bar
+
+jobs:
+  general-maintenance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "latest"
+
+      - name: Detect Terraform modules
+        id: detect_modules
+        run: |
+          # Change to terraform directory and initialize
+          echo "Maintenance Started !!"
+
+      - name: Download reusable action content
+        uses: actions/checkout@v4
+        with:
+          repository: gocloudLa/.github
+          ref: feature/readme-generator
+          path: ./shared-repository
+
+      - name: Debug Files
+        run: |
+          pwd
+          find ./shared-repository

@@ -1,0 +1,78 @@
+# Standard Platform - Terraform Module 🚀🚀
+<p align="right"><a href="https://partners.amazonaws.com/partners/0018a00001hHve4AAC/GoCloud"><img src="https://img.shields.io/badge/AWS%20Partner-Advanced-orange?style=for-the-badge&logo=amazonaws&logoColor=white" alt="AWS Partner"/></a><a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-green?style=for-the-badge&logo=apache&logoColor=white" alt="LICENSE"/></a></p>
+
+Welcome to the Standard Platform — a suite of reusable and production-ready Terraform modules purpose-built for AWS environments.
+Each module encapsulates best practices, security configurations, and sensible defaults to simplify and standardize infrastructure provisioning across projects.
+
+## 📦 Module: {{ module_name }}
+{% if module_badges %}<p align="right">{% for badge in module_badges %}<a href="{{ badge.url }}"><img src="{{ badge.image }}" alt="{{ badge.alt }}"/></a>{% endfor %}</p>{% endif %}
+{{ module_description }}
+
+### ✨ Features
+{% for feature in features %}
+- {{ feature.icon }} [{{ feature.title }}](#{{ feature.title | lower | replace(' ', '-') }}) - {{ feature.short_description }}
+{% endfor %}
+
+{% if external_modules %}
+### 🔗 External Modules
+| Name | Version |
+|------|------:|
+{% for mod in external_modules -%}
+| [{{ mod.name }}]({{ mod.url }}) | {{ mod.version or '' }} |
+{% endfor %}
+{% endif %}
+
+## 🚀 Quick Start
+{{ quick_start }}
+
+## 🔧 Additional Features Usage
+{% for feature in features %}
+### {{ feature.title }}
+{{ feature.long_description }}
+{% for example in feature.examples %}
+<details><summary>{{ example.title }}</summary>
+
+{{ example.code }}
+
+</details>
+{% endfor %}
+{% endfor %}
+
+{% if inputs_table_pretty %}
+## 📑 Inputs
+{{ inputs_table_pretty }}
+{% endif %}
+
+{% if outputs_table %}
+## 📤 Outputs
+{{ outputs_table }}
+{% endif %}
+
+{% if examples %}
+## 📚 Examples
+{{ examples }}
+{% endif %}
+
+{% if important_notes %}
+## ⚠️ Important Notes
+{{ important_notes }}
+{% endif %}
+
+---
+
+## 🤝 Contributing
+We welcome contributions! Please see our contributing guidelines for more details.
+
+## 🆘 Support
+- 📧 **Email**: info@gocloud.la
+- 🐛 **Issues**: [GitHub Issues](https://github.com/gocloudLa/issues)
+
+## 🧑‍💻 About
+We are focused on Cloud Engineering, DevOps, and Infrastructure as Code.
+We specialize in helping companies design, implement, and operate secure and scalable cloud-native platforms.
+- 🌎 [www.gocloud.la](https://www.gocloud.la)
+- ☁️ AWS Advanced Partner (Terraform, DevOps, GenAI)
+- 📫 Contact: info@gocloud.la
+
+## 📄 License
+This project is licensed under the Apache 2.0 License - see the [LICENSE](LICENSE) file for details. 
