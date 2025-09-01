@@ -110,8 +110,7 @@ jobs:
           python .action-tmp/.github/readme-generator/generate_example.py \
             --yaml example/complete/README.yml \
             --template .action-tmp/.github/readme-generator/README.md.gotmpl \
-            --external_modules /tmp/external_modules.json \
-            --output ${{ inputs.output_path }} || true
+            --output example/complete/README.md || true
 
       - name: Check for changes
         id: check_changes
