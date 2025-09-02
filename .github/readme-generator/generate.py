@@ -40,9 +40,9 @@ except FileNotFoundError:
 # --- GENERAR TABLA DE VARIABLES ALINEADA ---
 header = ["Name", "Description", "Type", "Default", "Required"]
 rows = []
-if 'inputs_plain' in data and data['inputs_plain']:
+if 'input_table' in data and data['input_table']:
     # Parsear las filas plain (asume formato markdown sin header)
-    for line in data['inputs_plain'].splitlines():
+    for line in data['input_table'].splitlines():
         line = line.strip()
         if line.startswith('|') and line.endswith('|'):
             parts = [cell.strip() for cell in line[1:-1].split('|')]
