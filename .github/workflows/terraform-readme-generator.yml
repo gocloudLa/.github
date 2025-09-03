@@ -67,7 +67,7 @@ jobs:
               # Create module info as JSON
               module_json=$(jq -n \
                 --arg name "${namespace}/${name}/${provider}" \
-                --arg url "https://github.com/${namespace}/${name}-${provider}" \
+                --arg url "https://github.com/${namespace}/terraform-${provider}-${name}" \
                 --arg version "$current_version" \
                 '{name: $name, url: $url, version: $version}')
               
