@@ -18,7 +18,7 @@ Each module encapsulates best practices, security configurations, and sensible d
 | Name | Version |
 |------|------:|
 {% for mod in external_modules -%}
-| [{{ mod.name }}]({{ mod.url }}) | {{ mod.version or '' }} |
+| <a href="{{ mod.url }}" target="_blank">{{ mod.name }}</a> | {{ mod.version or '' }} |
 {% endfor %}
 {% endif %}
 
