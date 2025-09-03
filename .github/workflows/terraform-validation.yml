@@ -72,7 +72,7 @@ jobs:
           terraform_version: ${{ matrix.version }}
 
       - name: Initialize and validate v${{ matrix.version }}
-        working-directory: ${{ inputs.working_directory }}
+        working-directory: ${{ inputs.working_directory }}/examples/complete
         run: |
           terraform init
           terraform validate
