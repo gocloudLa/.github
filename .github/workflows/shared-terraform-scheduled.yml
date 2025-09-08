@@ -11,6 +11,14 @@ on:
         required: false
         type: string
         default: README.md
+      skip_readme_generator:
+        required: false
+        type: boolean
+        default: false
+      skip_maintenance:
+        required: false
+        type: boolean
+        default: false
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -23,7 +31,10 @@ jobs:
     with:
       readme_yaml: ${{ inputs.readme_yaml }}
       output_path: ${{ inputs.output_path }}
+      skip_execution: ${{ inputs.skip_readme_generator }}
 
   maintenance:
     uses: gocloudLa/.github/.github/workflows/terraform-maintenance.yml@main
+    with:
+      skip_execution: ${{ inputs.skip_maintenance }}
     secrets: inherit

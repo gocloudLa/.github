@@ -13,6 +13,10 @@ on:
         required: false
         default: '.'
         type: string
+      skip_execution:
+        required: false
+        type: boolean
+        default: false
 
 concurrency:
   group: terraform-validation-${{ github.ref }}
@@ -21,6 +25,7 @@ concurrency:
 jobs:
   terraform-validation-fmt:
     name: Terraform Validation FMT
+    if: ${{ !inputs.skip_execution }}
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -37,6 +42,7 @@ jobs:
 
   terraform-validation-get-versions:
     name: Get Min/Max versions
+    if: ${{ !inputs.skip_execution }}
     runs-on: ubuntu-latest
     needs: terraform-validation-fmt
     outputs:
@@ -54,6 +60,7 @@ jobs:
 
   terraform-validation-validate:
     name: Terraform Validation Validate
+    if: ${{ !inputs.skip_execution }}
     runs-on: ubuntu-latest
     needs: terraform-validation-get-versions
     strategy:
