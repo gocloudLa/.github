@@ -7,6 +7,14 @@ on:
         required: false
         type: string
         default: bar
+      skip_pull_request_validation:
+        required: false
+        type: boolean
+        default: false
+      skip_terraform_validation:
+        required: false
+        type: boolean
+        default: false
       skip_readme_generator:
         required: false
         type: boolean
@@ -19,10 +27,14 @@ concurrency:
 jobs:
   pull-request-validation:
     uses: gocloudLa/.github/.github/workflows/pull-request-validation.yml@feature/conditional-excecution
+    with:
+      skip_execution: ${{ inputs.skip_pull_request_validation }}
     secrets: inherit 
 
   terraform-validation:
     uses: gocloudLa/.github/.github/workflows/terraform-validation.yml@feature/conditional-excecution
+    with:
+      skip_execution: ${{ inputs.skip_terraform_validation }}
     secrets: inherit
 
   readme-generator:
