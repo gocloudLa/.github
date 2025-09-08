@@ -92,7 +92,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: gocloudLa/.github
-          ref: feature/conditional-excecution
+          ref: main
           path: .action-tmp
 
       - name: Set up Python

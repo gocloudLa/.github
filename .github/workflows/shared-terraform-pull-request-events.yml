@@ -26,19 +26,19 @@ concurrency:
 
 jobs:
   pull-request-validation:
-    uses: gocloudLa/.github/.github/workflows/pull-request-validation.yml@feature/conditional-excecution
+    uses: gocloudLa/.github/.github/workflows/pull-request-validation.yml@main
     with:
       skip_execution: ${{ inputs.skip_pull_request_validation }}
     secrets: inherit 
 
   terraform-validation:
-    uses: gocloudLa/.github/.github/workflows/terraform-validation.yml@feature/conditional-excecution
+    uses: gocloudLa/.github/.github/workflows/terraform-validation.yml@main
     with:
       skip_execution: ${{ inputs.skip_terraform_validation }}
     secrets: inherit
 
   readme-generator:
-    uses: gocloudLa/.github/.github/workflows/terraform-readme-generator.yml@feature/conditional-excecution
+    uses: gocloudLa/.github/.github/workflows/terraform-readme-generator.yml@main
     with:
       skip_execution: ${{ inputs.skip_readme_generator }}
     secrets: inherit

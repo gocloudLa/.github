@@ -26,7 +26,7 @@ concurrency:
 
 jobs:
   readme:
-    uses: gocloudLa/.github/.github/workflows/terraform-readme-generator.yml@feature/conditional-excecution
+    uses: gocloudLa/.github/.github/workflows/terraform-readme-generator.yml@main
     secrets: inherit 
     with:
       readme_yaml: ${{ inputs.readme_yaml }}
@@ -34,7 +34,7 @@ jobs:
       skip_execution: ${{ inputs.skip_readme_generator }}
 
   maintenance:
-    uses: gocloudLa/.github/.github/workflows/terraform-maintenance.yml@feature/conditional-excecution
+    uses: gocloudLa/.github/.github/workflows/terraform-maintenance.yml@main
     with:
       skip_execution: ${{ inputs.skip_maintenance }}
     secrets: inherit
