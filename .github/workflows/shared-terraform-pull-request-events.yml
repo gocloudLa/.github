@@ -7,6 +7,10 @@ on:
         required: false
         type: string
         default: bar
+      skip_readme_generator:
+        required: false
+        type: boolean
+        default: false
 
 concurrency:
   group: shared-terraform-pull-request-events-${{ github.ref }}
@@ -23,6 +27,8 @@ jobs:
 
   readme-generator:
     uses: gocloudLa/.github/.github/workflows/terraform-readme-generator.yml@main
+    with:
+      skip_execution: ${{ inputs.skip_readme_generator }}
     secrets: inherit
 
   workflow-summary:
