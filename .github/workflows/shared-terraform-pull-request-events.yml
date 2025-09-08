@@ -18,15 +18,15 @@ concurrency:
 
 jobs:
   pull-request-validation:
-    uses: gocloudLa/.github/.github/workflows/pull-request-validation.yml@main
+    uses: gocloudLa/.github/.github/workflows/pull-request-validation.yml@feature/conditional-excecution
     secrets: inherit 
 
   terraform-validation:
-    uses: gocloudLa/.github/.github/workflows/terraform-validation.yml@main
+    uses: gocloudLa/.github/.github/workflows/terraform-validation.yml@feature/conditional-excecution
     secrets: inherit
 
   readme-generator:
-    uses: gocloudLa/.github/.github/workflows/terraform-readme-generator.yml@main
+    uses: gocloudLa/.github/.github/workflows/terraform-readme-generator.yml@feature/conditional-excecution
     with:
       skip_execution: ${{ inputs.skip_readme_generator }}
     secrets: inherit
